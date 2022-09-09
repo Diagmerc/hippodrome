@@ -1,11 +1,15 @@
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.isNull;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class HippodromeTest {
 
@@ -42,6 +46,28 @@ class HippodromeTest {
             new Horse("Buket", 30)
     );
     Hippodrome hippodrome = new Hippodrome(testHorses);
+    @Test
+    void exeptionWhenConstructorArgNull(){
+        assertThrows(IllegalArgumentException.class,()->new Hippodrome(null));
+    }
+    @Test
+    void messageWhenConstructorArgNull(){
+        IllegalArgumentException exception =
+        assertThrows(IllegalArgumentException.class,()->new Hippodrome(null));
+        assertEquals("Horses cannot be null.", exception.getMessage());
+    }
+    @Test
+    void exeptionWhenConstructorArgListEmpty(){
+        List<Horse> horses = new ArrayList<>();
+        assertThrows(IllegalArgumentException.class,()->new Hippodrome(horses));
+    }
+    @Test
+    void messageWhenConstructorArgListEmpty(){
+        List<Horse> horses = new ArrayList<>();
+        IllegalArgumentException exception =
+        assertThrows(IllegalArgumentException.class,()->new Hippodrome(horses));
+        assertEquals("Horses cannot be empty.", exception.getMessage());
+    }
 
     @Test
     void getHorses() {
@@ -50,10 +76,31 @@ class HippodromeTest {
 
     @Test
     void move() {
+        ArrayList<Horse> horses = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            horses.add(mock(Horse.class));
+        }
+        Hippodrome hippodrome = new Hippodrome(horses);
+        hippodrome.move();
+        for (Horse hors : horses) {
+            verify(hors).move();
+        }
     }
 
     @Test
     void getWinner() {
-        assertEquals(20, hippodrome.getWinner());
+        Horse django = new Horse("Django", 1.4);
+        Horse saharok = new Horse("Saharok", 2.5,6);
+        Horse black = new Horse("Black", 3.6,3);
+        Horse fire = new Horse("Fire", 4.7,7);
+        Horse lobster = new Horse("Lobster", 5.8,8);
+        ArrayList<Horse> horses = new ArrayList<>();
+        horses.add(django);
+        horses.add(saharok);
+        horses.add(black);
+        horses.add(fire);
+        horses.add(lobster);
+        Hippodrome hippodrome = new Hippodrome(horses);
+        assertEquals(lobster, hippodrome.getWinner());
     }
 }

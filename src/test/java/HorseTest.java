@@ -24,7 +24,7 @@ class HorseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {" ", "    "})
+    @ValueSource(strings = {" ", "    ", "", "\t\t", "\n\n\n"})
     void TestWhenFirstParameterWhiteSpace(String str){
         assertThrows(IllegalArgumentException.class, () -> {
             new Horse(str, 2);
@@ -77,11 +77,11 @@ class HorseTest {
     }
 
     @Test
-    void returnValueForMoveTest() {// TODO: 24.08.2022 тут дописать 
+    void returnValueForMoveTest() {
         try (MockedStatic<Horse>horseMockedStatic = Mockito.mockStatic(Horse.class)) {
             Horse horse = new Horse("Bruno", 2);
-            horseMockedStatic.when(horse::move).thenReturn(10);
-            assertEquals(10,Horse.getRandomDouble(0.2,0.9));
+            horseMockedStatic.when(horse::move).thenReturn(10.0);
+            assertEquals(10.0,Horse.getRandomDouble(0.2,0.9));
         }
     }
     @Test
