@@ -7,9 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled("Test disabled")
+
 class MainTest {
 
+    @Disabled
     @Test
     @Timeout(22)
     void main() throws Exception {
